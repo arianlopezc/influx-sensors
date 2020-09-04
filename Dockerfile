@@ -23,7 +23,7 @@ RUN npm install --only=production
 
 COPY . .
 
-COPY --from=development /usr/src/app .
+COPY --from=development /usr/src/app/bin .
 
 EXPOSE 32767
-CMD ["node", "bin/index.js"]
+CMD ["node", "index.js"]
