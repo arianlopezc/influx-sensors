@@ -1,0 +1,30 @@
+version: '3'
+
+networks:
+  my-network:
+    driver: bridge
+
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '8086:8086'
+    environment:
+      - INFLUXDB_DB=sensors
+      - INFLUXDB_ADMIN_USER=root
+      - INFLUXDB_ADMIN_PASSWORD=password123
+      - INFLUXDB_CONFIG_PATH=/etc/influxdb/influxdb.conf
+      - INFLUX_TOKEN=token123
+    volumes:
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+    networks:
+      - my-network
+  web:
+    image: beo01/sensors:1.0
+    build: .
+    networks:
+     - my-network
+    ports:
+      - '32767:32767'
+    depends_on:
+      - influxdb
